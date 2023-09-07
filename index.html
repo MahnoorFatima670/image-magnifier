@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Magnifier</title>
+    <style>
+        /* Add some basic styles to the container and image */
+        .image-container {
+            position: relative;
+            width: 400px;
+        }
+
+        .image {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Create a magnifying glass */
+        .magnifying-glass {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #000;
+            border-radius: 50%;
+            cursor: none;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img class="image" src="        https://previews.123rf.com/images/miloushek/miloushek1011/miloushek101100013/8261073-computer-set.jpg          " alt="Magnifiable Image">
+        <div class="magnifying-glass"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Function to handle image magnification
+            $(".image-container").mousemove(function(event) {
+                var $magnifyingGlass = $(".magnifying-glass");
+                var $image = $(".image");
+                var magnifyFactor = 2; // Adjust the magnification factor as needed
+                var glassSize = $magnifyingGlass.width() / 2;
+
+                // Calculate the position of the magnifying glass
+                var xPos = event.pageX - $image.offset().left - glassSize;
+                var yPos = event.pageY - $image.offset().top - glassSize;
+
+                // Apply the magnified image as a background to the magnifying glass
+                $magnifyingGlass.css({
+                    "left": xPos + "px",
+                    "top": yPos + "px",
+                    "background-image": "url('" + $image.attr("src") + "')",
+                    "background-size": ($image.width() * magnifyFactor) + "px " + ($image.height() * magnifyFactor) + "px",
+                    "background-position": -xPos * magnifyFactor + "px " + -yPos * magnifyFactor + "px"
+                });
+
+                // Show the magnifying glass
+                $magnifyingGlass.show();
+            });
+
+            // Hide the magnifying glass when the mouse leaves the container
+            $(".image-container").mouseleave(function() {
+                $(".magnifying-glass").hide();
+            });
+        });
+    </script>
+</body>
+</html>
